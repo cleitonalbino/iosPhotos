@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import Image from 'next/image';
-import imagesData from '../../data/images.json';
-import AdSenseAd from '../components/AdSenseAd';
+import { useEffect, useState, useRef, useCallback } from "react";
+import { useRouter, useParams } from "next/navigation";
+import Image from "next/image";
+import imagesData from "../../data/images.json";
+import AdSenseAd from "../components/AdSenseAd";
 
 interface ImageData {
   id: string;
@@ -40,7 +40,10 @@ export default function PhotoPage() {
   // Função para obter a próxima imagem sem repetição
   const getNextImage = useCallback((): ImageData => {
     // Se o pool estiver vazio ou chegamos ao fim, reembaralhamos
-    if (shuffledPoolRef.current.length === 0 || currentIndexRef.current >= shuffledPoolRef.current.length) {
+    if (
+      shuffledPoolRef.current.length === 0 ||
+      currentIndexRef.current >= shuffledPoolRef.current.length
+    ) {
       shuffledPoolRef.current = shuffleArray(imagesData);
       currentIndexRef.current = 0;
     }
@@ -54,12 +57,12 @@ export default function PhotoPage() {
   useEffect(() => {
     if (initializedRef.current) return;
 
-    const current = imagesData.find(img => img.id === currentId);
+    const current = imagesData.find((img) => img.id === currentId);
     if (current) {
       initializedRef.current = true;
 
       // Inicializar o pool embaralhado removendo a imagem atual
-      const otherImages = imagesData.filter(img => img.id !== currentId);
+      const otherImages = imagesData.filter((img) => img.id !== currentId);
       shuffledPoolRef.current = shuffleArray(otherImages);
       currentIndexRef.current = 0;
 
@@ -73,7 +76,8 @@ export default function PhotoPage() {
       setImages(initialImages);
     } else {
       // Se o ID não existir, redireciona para uma imagem aleatória
-      const randomImage = imagesData[Math.floor(Math.random() * imagesData.length)];
+      const randomImage =
+        imagesData[Math.floor(Math.random() * imagesData.length)];
       router.push(`/${randomImage.id}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,7 +88,7 @@ export default function PhotoPage() {
     if (isLoadingRef.current) return;
 
     isLoadingRef.current = true;
-    setImages(prev => [
+    setImages((prev) => [
       ...prev,
       getNextImage(),
       getNextImage(),
@@ -102,23 +106,24 @@ export default function PhotoPage() {
     if (!container) return;
 
     if (isScrollLocked) {
-      const scrollTop = container.scrollTop;
-      container.style.overflow = 'hidden';
+      container.style.overflow = "hidden";
 
       const preventScroll = (e: WheelEvent | TouchEvent) => {
         e.preventDefault();
         e.stopPropagation();
       };
 
-      container.addEventListener('wheel', preventScroll, { passive: false });
-      container.addEventListener('touchmove', preventScroll, { passive: false });
+      container.addEventListener("wheel", preventScroll, { passive: false });
+      container.addEventListener("touchmove", preventScroll, {
+        passive: false,
+      });
 
       return () => {
-        container.removeEventListener('wheel', preventScroll);
-        container.removeEventListener('touchmove', preventScroll);
+        container.removeEventListener("wheel", preventScroll);
+        container.removeEventListener("touchmove", preventScroll);
       };
     } else {
-      container.style.overflow = 'scroll';
+      container.style.overflow = "scroll";
     }
   }, [isScrollLocked]);
 
@@ -126,7 +131,7 @@ export default function PhotoPage() {
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: '200px', // Começar a carregar quando estiver a 200px
+      rootMargin: "200px", // Começar a carregar quando estiver a 200px
       threshold: 0.1,
     };
 
@@ -134,12 +139,12 @@ export default function PhotoPage() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const target = entry.target as HTMLDivElement;
-          const index = parseInt(target.dataset.index || '0', 10);
+          const index = parseInt(target.dataset.index || "0", 10);
           const image = images[index];
 
           if (image) {
             // Atualizar URL sem recarregar a página
-            window.history.replaceState(null, '', `/${image.id}`);
+            window.history.replaceState(null, "", `/${image.id}`);
           }
 
           // Se estamos vendo uma das últimas 2 imagens, carregar mais
@@ -148,9 +153,9 @@ export default function PhotoPage() {
           }
 
           // Verificar se é um anúncio e bloquear scroll
-          const isAd = target.dataset.isAd === 'true';
+          const isAd = target.dataset.isAd === "true";
           if (isAd) {
-            const timerCompleted = target.dataset.timerCompleted === 'true';
+            const timerCompleted = target.dataset.timerCompleted === "true";
             if (!timerCompleted) {
               setIsScrollLocked(true);
             }
@@ -159,34 +164,21 @@ export default function PhotoPage() {
       });
     };
 
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    const observer = new IntersectionObserver(
+      observerCallback,
+      observerOptions
+    );
 
     // Observar todas as divs de imagens e anúncios
-    const imageElements = document.querySelectorAll('[data-image-container], [data-ad-container]');
+    const imageElements = document.querySelectorAll(
+      "[data-image-container], [data-ad-container]"
+    );
     imageElements.forEach((element) => {
       observer.observe(element);
     });
 
     return () => observer.disconnect();
   }, [images, loadMoreImages]);
-
-  // Função de download
-  const handleDownload = async (image: ImageData) => {
-    try {
-      const response = await fetch(image.img);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `image-${image.id}.jpg`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (error) {
-      console.error('Erro ao baixar imagem:', error);
-    }
-  };
 
   if (images.length === 0) {
     return (
@@ -200,7 +192,7 @@ export default function PhotoPage() {
     <div
       ref={containerRef}
       className="fixed inset-0 overflow-y-scroll scroll-smooth snap-y snap-mandatory"
-      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       <style jsx>{`
         div::-webkit-scrollbar {
@@ -220,7 +212,7 @@ export default function PhotoPage() {
               className="relative w-full h-screen snap-start snap-always"
             >
               <Image
-                src={image.img}
+                src={image.thumb}
                 alt={`Imagem ${image.id}`}
                 fill
                 className="object-cover"
@@ -229,8 +221,10 @@ export default function PhotoPage() {
               />
 
               {/* Botão de download */}
-              <button
-                onClick={() => handleDownload(image)}
+              <a
+                href={image.img}
+                download
+                rel="noopener noreferrer"
                 className="absolute bottom-8 right-8 bg-white/90 hover:bg-white text-black px-6 py-3 rounded-full shadow-lg transition-all duration-200 flex items-center gap-2 font-medium z-10"
                 aria-label="Download imagem"
               >
@@ -250,7 +244,7 @@ export default function PhotoPage() {
                   <line x1="12" y1="15" x2="12" y2="3"></line>
                 </svg>
                 Download
-              </button>
+              </a>
 
               {/* Indicador de scroll - apenas na primeira imagem */}
               {index === 0 && (
@@ -284,9 +278,11 @@ export default function PhotoPage() {
                   adSlot={`ad-${Math.floor(index / 5)}`}
                   onTimerComplete={() => {
                     setIsScrollLocked(false);
-                    const adContainer = document.getElementById(`ad-container-${index}`);
+                    const adContainer = document.getElementById(
+                      `ad-container-${index}`
+                    );
                     if (adContainer) {
-                      adContainer.dataset.timerCompleted = 'true';
+                      adContainer.dataset.timerCompleted = "true";
                     }
                   }}
                 />
