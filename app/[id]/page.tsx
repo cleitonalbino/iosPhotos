@@ -18,14 +18,37 @@ export default function PhotoPage() {
   const currentId = params.id as string;
 
   const [images, setImages] = useState<ImageData[]>([]);
+  const [isScrollLocked, setIsScrollLocked] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const isLoadingRef = useRef(false);
   const initializedRef = useRef(false);
 
-  // Função para obter uma imagem aleatória
-  const getRandomImage = useCallback((): ImageData => {
-    return imagesData[Math.floor(Math.random() * imagesData.length)];
+  // Pool de imagens embaralhadas e índice atual
+  const shuffledPoolRef = useRef<ImageData[]>([]);
+  const currentIndexRef = useRef(0);
+
+  // Função para embaralhar array (Fisher-Yates shuffle)
+  const shuffleArray = useCallback((array: ImageData[]): ImageData[] => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
   }, []);
+
+  // Função para obter a próxima imagem sem repetição
+  const getNextImage = useCallback((): ImageData => {
+    // Se o pool estiver vazio ou chegamos ao fim, reembaralhamos
+    if (shuffledPoolRef.current.length === 0 || currentIndexRef.current >= shuffledPoolRef.current.length) {
+      shuffledPoolRef.current = shuffleArray(imagesData);
+      currentIndexRef.current = 0;
+    }
+
+    const nextImage = shuffledPoolRef.current[currentIndexRef.current];
+    currentIndexRef.current += 1;
+    return nextImage;
+  }, [shuffleArray]);
 
   // Inicializar com a imagem atual e mais algumas
   useEffect(() => {
@@ -34,12 +57,18 @@ export default function PhotoPage() {
     const current = imagesData.find(img => img.id === currentId);
     if (current) {
       initializedRef.current = true;
+
+      // Inicializar o pool embaralhado removendo a imagem atual
+      const otherImages = imagesData.filter(img => img.id !== currentId);
+      shuffledPoolRef.current = shuffleArray(otherImages);
+      currentIndexRef.current = 0;
+
       const initialImages = [
         current,
-        getRandomImage(),
-        getRandomImage(),
-        getRandomImage(),
-        getRandomImage(),
+        getNextImage(),
+        getNextImage(),
+        getNextImage(),
+        getNextImage(),
       ];
       setImages(initialImages);
     } else {
@@ -57,15 +86,41 @@ export default function PhotoPage() {
     isLoadingRef.current = true;
     setImages(prev => [
       ...prev,
-      getRandomImage(),
-      getRandomImage(),
-      getRandomImage(),
+      getNextImage(),
+      getNextImage(),
+      getNextImage(),
     ]);
 
     setTimeout(() => {
       isLoadingRef.current = false;
     }, 300);
-  }, [getRandomImage]);
+  }, [getNextImage]);
+
+  // Bloquear/desbloquear scroll
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    if (isScrollLocked) {
+      const scrollTop = container.scrollTop;
+      container.style.overflow = 'hidden';
+
+      const preventScroll = (e: WheelEvent | TouchEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+      };
+
+      container.addEventListener('wheel', preventScroll, { passive: false });
+      container.addEventListener('touchmove', preventScroll, { passive: false });
+
+      return () => {
+        container.removeEventListener('wheel', preventScroll);
+        container.removeEventListener('touchmove', preventScroll);
+      };
+    } else {
+      container.style.overflow = 'scroll';
+    }
+  }, [isScrollLocked]);
 
   // Detectar qual imagem está visível e carregar mais quando necessário
   useEffect(() => {
@@ -91,14 +146,23 @@ export default function PhotoPage() {
           if (index >= images.length - 2) {
             loadMoreImages();
           }
+
+          // Verificar se é um anúncio e bloquear scroll
+          const isAd = target.dataset.isAd === 'true';
+          if (isAd) {
+            const timerCompleted = target.dataset.timerCompleted === 'true';
+            if (!timerCompleted) {
+              setIsScrollLocked(true);
+            }
+          }
         }
       });
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    // Observar todas as divs de imagens
-    const imageElements = document.querySelectorAll('[data-image-container]');
+    // Observar todas as divs de imagens e anúncios
+    const imageElements = document.querySelectorAll('[data-image-container], [data-ad-container]');
     imageElements.forEach((element) => {
       observer.observe(element);
     });
@@ -210,7 +274,23 @@ export default function PhotoPage() {
 
             {/* Anúncio a cada 5 imagens */}
             {shouldShowAd && (
-              <AdSenseAd adSlot={`ad-${Math.floor(index / 5)}`} />
+              <div
+                data-ad-container
+                data-is-ad="true"
+                data-timer-completed="false"
+                id={`ad-container-${index}`}
+              >
+                <AdSenseAd
+                  adSlot={`ad-${Math.floor(index / 5)}`}
+                  onTimerComplete={() => {
+                    setIsScrollLocked(false);
+                    const adContainer = document.getElementById(`ad-container-${index}`);
+                    if (adContainer) {
+                      adContainer.dataset.timerCompleted = 'true';
+                    }
+                  }}
+                />
+              </div>
             )}
           </div>
         );
