@@ -213,7 +213,7 @@ export default function PhotoPage() {
             >
               <Image
                 src={image.thumb}
-                alt={`Imagem ${image.id}`}
+                alt={`High-quality photo ${image.id} - Browse and download stunning photography from our curated collection`}
                 fill
                 className="object-cover"
                 priority={index < 3}
