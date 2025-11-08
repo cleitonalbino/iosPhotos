@@ -2,11 +2,11 @@ import { Metadata } from "next";
 import imagesData from "../../data/images.json";
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = params;
+  const { id } = await params;
   const image = imagesData.find((img) => img.id === id);
 
   if (!image) {
@@ -88,14 +88,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function PhotoLayout({
+export default async function PhotoLayout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = params;
+  const { id } = await params;
   const image = imagesData.find((img) => img.id === id);
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yoursite.com";
 
