@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import imagesData from "../../data/images.json";
-import JsonLd from "./JsonLd";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -157,7 +156,12 @@ export default async function PhotoLayout({
 
   return (
     <>
-      <JsonLd data={jsonLd} />
+      {/* JSON-LD Structured Data - Google reads this from body too */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        suppressHydrationWarning
+      />
       {children}
     </>
   );
