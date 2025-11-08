@@ -123,13 +123,15 @@ export default function PhotoViewer({ initialImage }: PhotoViewerProps) {
     const observerOptions = {
       root: null,
       rootMargin: "200px", // Começar a carregar quando estiver a 200px
-      threshold: 0.1,
+      threshold: 0.5, // Aumentado para 50% para melhor detecção
     };
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
+        const target = entry.target as HTMLDivElement;
+        const isAd = target.dataset.isAd === "true";
+
         if (entry.isIntersecting) {
-          const target = entry.target as HTMLDivElement;
           const index = parseInt(target.dataset.index || "0", 10);
           const image = images[index];
 
@@ -144,12 +146,22 @@ export default function PhotoViewer({ initialImage }: PhotoViewerProps) {
           }
 
           // Verificar se é um anúncio e bloquear scroll
-          const isAd = target.dataset.isAd === "true";
           if (isAd) {
             const timerCompleted = target.dataset.timerCompleted === "true";
             if (!timerCompleted) {
               setIsScrollLocked(true);
+            } else {
+              setIsScrollLocked(false);
             }
+          } else {
+            // Se não é anúncio, desbloquear scroll
+            setIsScrollLocked(false);
+          }
+        } else {
+          // Quando sair do viewport
+          if (isAd) {
+            // Se saiu do anúncio, desbloquear scroll
+            setIsScrollLocked(false);
           }
         }
       });

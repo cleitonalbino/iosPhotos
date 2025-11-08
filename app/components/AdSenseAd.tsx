@@ -9,10 +9,34 @@ interface AdSenseAdProps {
 
 export default function AdSenseAd({ adSlot, onTimerComplete }: AdSenseAdProps) {
   const adRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const isAdPushed = useRef(false);
+  const timerStarted = useRef(false);
   const [progress, setProgress] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
+  // Detectar quando o anúncio entra na viewport
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !timerStarted.current) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.5 } // Trigger quando 50% do anúncio estiver visível
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Carregar o AdSense
   useEffect(() => {
     if (adRef.current && !isAdPushed.current) {
       try {
@@ -25,8 +49,11 @@ export default function AdSenseAd({ adSlot, onTimerComplete }: AdSenseAdProps) {
     }
   }, []);
 
-  // Timer de 5 segundos
+  // Timer de 5 segundos - só inicia quando o anúncio fica visível
   useEffect(() => {
+    if (!isVisible || timerStarted.current) return;
+
+    timerStarted.current = true;
     const duration = 5000; // 5 segundos
     const interval = 50; // Atualizar a cada 50ms para suavidade
     const steps = duration / interval;
@@ -40,45 +67,45 @@ export default function AdSenseAd({ adSlot, onTimerComplete }: AdSenseAdProps) {
       if (currentStep >= steps) {
         clearInterval(timer);
         setIsComplete(true);
-        if (onTimerComplete) {
-          onTimerComplete();
-        }
+        onTimerComplete?.();
       }
     }, interval);
 
     return () => clearInterval(timer);
-  }, [onTimerComplete]);
+  }, [isVisible, onTimerComplete]);
 
   return (
-    <div className="relative w-full h-screen snap-start snap-always bg-black flex items-center justify-center">
-      <div className="w-full max-w-4xl px-4">
-        <div ref={adRef} className="w-full">
-          <ins
-            className="adsbygoogle"
-            style={{ display: 'block' }}
-            data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX" // Substitua pelo seu ID
-            data-ad-slot={adSlot}
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          ></ins>
-        </div>
+    <div
+      ref={containerRef}
+      className="relative w-full h-screen snap-start snap-always bg-black flex items-center justify-center"
+    >
+      {/* Anúncio ocupa 100% da tela */}
+      <div ref={adRef} className="w-full h-full flex items-center justify-center p-4">
+        <ins
+          className="adsbygoogle"
+          style={{ display: 'block', width: '100%', height: '100%' }}
+          data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX" // Substitua pelo seu ID
+          data-ad-slot={adSlot}
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        ></ins>
       </div>
 
       {/* Indicador visual de que é um anúncio */}
-      <div className="absolute top-4 left-4 text-white/50 text-xs uppercase tracking-wider">
-        Anúncio
+      <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm px-3 py-1 rounded text-white/70 text-xs uppercase tracking-wider z-20">
+        Advertisement
       </div>
 
-      {/* Barra de progresso e mensagem */}
-      {!isComplete && (
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-full max-w-md px-4">
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 space-y-3">
-            <p className="text-white text-center text-sm">
-              Aguarde {Math.ceil((100 - progress) / 20)} segundos para continuar...
+      {/* Barra de progresso e mensagem - Só mostra se visível */}
+      {isVisible && !isComplete && (
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent pt-16 pb-8 px-4 z-20">
+          <div className="max-w-md mx-auto bg-white/10 backdrop-blur-md rounded-xl p-5 space-y-3 shadow-2xl">
+            <p className="text-white text-center text-base font-medium">
+              Wait {Math.ceil((100 - progress) / 20)} seconds to continue...
             </p>
-            <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
+            <div className="w-full bg-gray-700/50 rounded-full h-2.5 overflow-hidden">
               <div
-                className="bg-white h-full transition-all duration-100 ease-linear"
+                className="bg-white h-full transition-all duration-100 ease-linear rounded-full"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -88,9 +115,9 @@ export default function AdSenseAd({ adSlot, onTimerComplete }: AdSenseAdProps) {
 
       {/* Indicador de que pode continuar */}
       {isComplete && (
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/70 animate-bounce">
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-sm">Arraste para continuar</p>
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+          <div className="bg-white/10 backdrop-blur-md rounded-full px-6 py-3 flex flex-col items-center gap-2 animate-bounce">
+            <p className="text-white text-sm font-medium">Scroll to continue</p>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -101,6 +128,7 @@ export default function AdSenseAd({ adSlot, onTimerComplete }: AdSenseAdProps) {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              className="text-white"
             >
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
