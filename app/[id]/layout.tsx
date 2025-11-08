@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import imagesData from "../../data/images.json";
+import JsonLd from "./JsonLd";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -156,10 +157,7 @@ export default async function PhotoLayout({
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
       {children}
     </>
   );
