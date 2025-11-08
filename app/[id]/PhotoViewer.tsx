@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, lazy, Suspense } from "react";
 import Image from "next/image";
 import imagesData from "../../data/images.json";
-import AdSenseAd from "../components/AdSenseAd";
+
+// Lazy load do componente de anúncio para melhor performance
+const AdSenseAd = lazy(() => import("../components/AdSenseAd"));
 
 interface ImageData {
   id: string;
@@ -118,6 +120,21 @@ export default function PhotoViewer({ initialImage }: PhotoViewerProps) {
     }
   }, [isScrollLocked]);
 
+  // Preload das próximas imagens para melhor performance
+  useEffect(() => {
+    if (images.length < 2) return;
+
+    // Preload das próximas 2 imagens
+    const preloadImages = images.slice(1, 3);
+    preloadImages.forEach((img) => {
+      const link = document.createElement("link");
+      link.rel = "prefetch";
+      link.as = "image";
+      link.href = img.thumb;
+      document.head.appendChild(link);
+    });
+  }, [images]);
+
   // Detectar qual imagem está visível e carregar mais quando necessário
   useEffect(() => {
     const observerOptions = {
@@ -219,8 +236,12 @@ export default function PhotoViewer({ initialImage }: PhotoViewerProps) {
                 alt={`High-quality photo ${image.id} - Browse and download stunning photography from our curated collection`}
                 fill
                 className="object-cover"
-                priority={index < 3}
-                unoptimized
+                priority={index === 0}
+                loading={index === 0 ? "eager" : "lazy"}
+                sizes="100vw"
+                quality={85}
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8A/9k="
               />
 
               {/* Botão de download */}
@@ -277,18 +298,26 @@ export default function PhotoViewer({ initialImage }: PhotoViewerProps) {
                 data-timer-completed="false"
                 id={`ad-container-${index}`}
               >
-                <AdSenseAd
-                  adSlot={`ad-${Math.floor(index / 5)}`}
-                  onTimerComplete={() => {
-                    setIsScrollLocked(false);
-                    const adContainer = document.getElementById(
-                      `ad-container-${index}`
-                    );
-                    if (adContainer) {
-                      adContainer.dataset.timerCompleted = "true";
-                    }
-                  }}
-                />
+                <Suspense
+                  fallback={
+                    <div className="w-full h-screen bg-black flex items-center justify-center snap-start snap-always">
+                      <div className="text-white/50">Loading ad...</div>
+                    </div>
+                  }
+                >
+                  <AdSenseAd
+                    adSlot={`ad-${Math.floor(index / 5)}`}
+                    onTimerComplete={() => {
+                      setIsScrollLocked(false);
+                      const adContainer = document.getElementById(
+                        `ad-container-${index}`
+                      );
+                      if (adContainer) {
+                        adContainer.dataset.timerCompleted = "true";
+                      }
+                    }}
+                  />
+                </Suspense>
               </div>
             )}
           </div>
