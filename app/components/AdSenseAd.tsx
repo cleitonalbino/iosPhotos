@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 interface AdSenseAdProps {
   adSlot: string;
@@ -44,7 +44,7 @@ export default function AdSenseAd({ adSlot, onTimerComplete }: AdSenseAdProps) {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
         isAdPushed.current = true;
       } catch (err) {
-        console.error('AdSense error:', err);
+        console.error("AdSense error:", err);
       }
     }
   }, []);
@@ -81,10 +81,13 @@ export default function AdSenseAd({ adSlot, onTimerComplete }: AdSenseAdProps) {
       style={{ scrollSnapAlign: "start", scrollSnapStop: "always" }}
     >
       {/* Anúncio ocupa 100% da tela */}
-      <div ref={adRef} className="w-full h-full flex items-center justify-center p-4">
+      <div
+        ref={adRef}
+        className="w-full h-full flex items-center justify-center p-4"
+      >
         <ins
           className="adsbygoogle"
-          style={{ display: 'block', width: '100%', height: '100%' }}
+          style={{ display: "block", width: "100%", height: "100%" }}
           data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX" // Substitua pelo seu ID
           data-ad-slot={adSlot}
           data-ad-format="auto"
@@ -99,7 +102,7 @@ export default function AdSenseAd({ adSlot, onTimerComplete }: AdSenseAdProps) {
 
       {/* Barra de progresso e mensagem - Só mostra se visível */}
       {isVisible && !isComplete && (
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent pt-16 pb-8 px-4 z-20">
+        <div className="absolute bottom-[120px] left-0 right-0 bg-gradient-to-t from-black/80 to-transparent pt-16 pb-8 px-4 z-20">
           <div className="max-w-md mx-auto bg-white/10 backdrop-blur-md rounded-xl p-5 space-y-3 shadow-2xl border border-white/10">
             <p className="text-white text-center text-base font-medium">
               Wait {Math.ceil((100 - progress) / 20)} seconds to continue...
@@ -116,7 +119,7 @@ export default function AdSenseAd({ adSlot, onTimerComplete }: AdSenseAdProps) {
 
       {/* Indicador de que pode continuar */}
       {isComplete && (
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+        <div className="absolute bottom-[120px] left-1/2 transform -translate-x-1/2 z-20">
           <div className="bg-white/10 backdrop-blur-md rounded-full px-6 py-3 flex flex-col items-center gap-2 animate-bounce border border-white/20">
             <p className="text-white text-sm font-medium">Scroll to continue</p>
             <svg
