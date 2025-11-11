@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback, lazy, Suspense } from "react";
+import {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  lazy,
+  Suspense,
+} from "react";
 import Image from "next/image";
 import imagesData from "../../data/images.json";
 
@@ -229,7 +236,7 @@ export default function PhotoViewer({ initialImage }: PhotoViewerProps) {
             <div
               data-image-container
               data-index={index}
-              className="relative w-full h-screen snap-start snap-always"
+              className="relative w-full h-full"
             >
               <Image
                 src={image.thumb}
