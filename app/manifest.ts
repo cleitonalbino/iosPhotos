@@ -8,9 +8,11 @@ export default function manifest(): MetadataRoute.Manifest {
       "Browse and download high-quality photos with infinite scroll. Discover stunning photography from our curated collection.",
     start_url: "/",
     display: "standalone",
+    display_override: ["window-controls-overlay", "standalone"],
     background_color: "#000000",
     theme_color: "#000000",
     orientation: "portrait",
+    prefer_related_applications: false,
     icons: [
       {
         src: "/favicon.ico",

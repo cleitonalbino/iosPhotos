@@ -78,6 +78,7 @@ export default function AdSenseAd({ adSlot, onTimerComplete }: AdSenseAdProps) {
     <div
       ref={containerRef}
       className="relative w-full h-screen snap-start snap-always bg-black flex items-center justify-center"
+      style={{ scrollSnapAlign: "start", scrollSnapStop: "always" }}
     >
       {/* Anúncio ocupa 100% da tela */}
       <div ref={adRef} className="w-full h-full flex items-center justify-center p-4">

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -91,6 +91,15 @@ export const metadata: Metadata = {
   category: "photography",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+  themeColor: "#000000",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -107,7 +116,7 @@ export default function RootLayout({
         ></script>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased m-0 p-0 overflow-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased m-0 p-0`}
       >
         {children}
       </body>

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import imagesData from "../../data/images.json";
-import PhotoViewer from "./PhotoViewer";
+import PhotoViewerSwiper from "./PhotoViewerSwiper";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -25,5 +25,5 @@ export default async function PhotoPage({ params }: PageProps) {
   }
 
   // Renderiza o componente client-side com a imagem inicial (SSR)
-  return <PhotoViewer initialImage={currentImage} />;
+  return <PhotoViewerSwiper initialImage={currentImage} />;
 }
