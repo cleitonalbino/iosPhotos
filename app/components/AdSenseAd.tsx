@@ -100,13 +100,13 @@ export default function AdSenseAd({ adSlot, onTimerComplete }: AdSenseAdProps) {
       {/* Barra de progresso e mensagem - Só mostra se visível */}
       {isVisible && !isComplete && (
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent pt-16 pb-8 px-4 z-20">
-          <div className="max-w-md mx-auto bg-white/10 backdrop-blur-md rounded-xl p-5 space-y-3 shadow-2xl">
+          <div className="max-w-md mx-auto bg-white/10 backdrop-blur-md rounded-xl p-5 space-y-3 shadow-2xl border border-white/10">
             <p className="text-white text-center text-base font-medium">
               Wait {Math.ceil((100 - progress) / 20)} seconds to continue...
             </p>
-            <div className="w-full bg-gray-700/50 rounded-full h-2.5 overflow-hidden">
+            <div className="w-full bg-white/10 rounded-full h-2.5 overflow-hidden border border-white/10">
               <div
-                className="bg-white h-full transition-all duration-100 ease-linear rounded-full"
+                className="bg-white h-full transition-all duration-100 ease-linear rounded-full shadow-lg"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -117,12 +117,12 @@ export default function AdSenseAd({ adSlot, onTimerComplete }: AdSenseAdProps) {
       {/* Indicador de que pode continuar */}
       {isComplete && (
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
-          <div className="bg-white/10 backdrop-blur-md rounded-full px-6 py-3 flex flex-col items-center gap-2 animate-bounce">
+          <div className="bg-white/10 backdrop-blur-md rounded-full px-6 py-3 flex flex-col items-center gap-2 animate-bounce border border-white/20">
             <p className="text-white text-sm font-medium">Scroll to continue</p>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"

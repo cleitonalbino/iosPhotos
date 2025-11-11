@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback, lazy, Suspense } from "react";
+import {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  lazy,
+  Suspense,
+} from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Keyboard, Mousewheel } from "swiper/modules";
@@ -228,54 +235,52 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
           return (
             <SwiperSlide key={`image-${slide.data.id}-${slideIndex}`}>
               <div className="relative w-full h-full bg-black">
-              <Image
-                src={slide.data.thumb}
-                alt={`High-quality photo ${slide.data.id} - Browse and download stunning photography from our curated collection`}
-                fill
-                className="object-cover"
-                priority={slideIndex === 0}
-                loading={slideIndex === 0 ? "eager" : "lazy"}
-                sizes="100vw"
-                quality={85}
-                placeholder="blur"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8A/9k="
-              />
+                <Image
+                  src={slide.data.thumb}
+                  alt={`High-quality photo ${slide.data.id} - Browse and download stunning photography from our curated collection`}
+                  fill
+                  className="object-cover"
+                  priority={slideIndex === 0}
+                  loading={slideIndex === 0 ? "eager" : "lazy"}
+                  sizes="100vw"
+                  quality={85}
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8A/9k="
+                />
 
-              {/* Botão de download */}
-              <a
-                href={slide.data.img}
-                download
-                rel="noopener noreferrer"
-                className="absolute bottom-8 right-8 bg-white/90 hover:bg-white text-black px-6 py-3 rounded-full shadow-lg transition-all duration-200 flex items-center gap-2 font-medium z-10"
-                aria-label="Download image"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                  <polyline points="7 10 12 15 17 10"></polyline>
-                  <line x1="12" y1="15" x2="12" y2="3"></line>
-                </svg>
-                Download
-              </a>
+                {/* Botões de ação */}
+                <div className="absolute bottom-[120px] w-full px-4 flex items-center justify-between gap-3 z-10">
+                  {/* Botão de compartilhar */}
+                  <button
+                    onClick={async () => {
+                      const siteUrl =
+                        process.env.NEXT_PUBLIC_SITE_URL ||
+                        window.location.origin;
+                      const shareData = {
+                        title: `Photo ${slide.data?.id} | Photo Viewer`,
+                        text: `Check out this amazing photo!`,
+                        url: `${siteUrl}/${slide.data?.id}`,
+                      };
 
-              {/* Indicador de swipe - apenas na primeira imagem */}
-              {slideIndex === 0 && (
-                <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/70 animate-bounce">
-                  <div className="flex flex-col items-center gap-1">
-                    <p className="text-xs">Swipe or scroll</p>
+                      try {
+                        if (navigator.share) {
+                          await navigator.share(shareData);
+                        } else {
+                          // Fallback: copiar link
+                          await navigator.clipboard.writeText(shareData.url);
+                          alert("Link copied to clipboard!");
+                        }
+                      } catch (err) {
+                        console.log("Error sharing:", err);
+                      }
+                    }}
+                    className="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white p-3 rounded-full shadow-lg transition-all duration-200 border border-white/20"
+                    aria-label="Share image"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
+                      width="20"
+                      height="20"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -283,12 +288,65 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     >
-                      <polyline points="6 9 12 15 18 9"></polyline>
+                      <circle cx="18" cy="5" r="3"></circle>
+                      <circle cx="6" cy="12" r="3"></circle>
+                      <circle cx="18" cy="19" r="3"></circle>
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                     </svg>
-                  </div>
+                  </button>
+
+                  {/* Botão de download */}
+                  <a
+                    href={slide.data.img}
+                    download
+                    rel="noopener noreferrer"
+                    className="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white p-3 rounded-full shadow-lg transition-all duration-200 border border-white/20"
+                    aria-label="Download image"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                  </a>
                 </div>
-              )}
-            </div>
+
+                {/* Indicador de swipe - apenas na primeira imagem */}
+                {slideIndex === 0 && (
+                  <div className="absolute bottom-[120px] left-1/2 transform -translate-x-1/2 animate-bounce">
+                    <div className="flex flex-col items-center gap-1 bg-black/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
+                      <p className="text-xs text-white/90 font-medium">
+                        Swipe or scroll
+                      </p>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="text-white/90"
+                      >
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </div>
             </SwiperSlide>
           );
         } else if (slide.type === "ad" && slide.adIndex !== undefined) {
