@@ -16,10 +16,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yoursite.com";
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://ios-wallpapers.app/";
   const pageUrl = `${siteUrl}/${id}`;
   const imageUrl = image.img;
-  const title = `HD iPhone Wallpaper ${id.substring(0, 8)} - Free Download iOS 26`;
+  const title = `HD iPhone Wallpaper ${id.substring(
+    0,
+    8
+  )} - Free Download iOS 26`;
   const description = `Download stunning HD iPhone wallpaper optimized for iOS 26. Perfect for iPhone lock screen and home screen. Free high-quality background for iPhone 15, 16 Pro Max and all iOS devices.`;
 
   return {
@@ -71,7 +75,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       images: [imageUrl],
-      creator: "@yourhandle", // Replace with your Twitter handle
     },
     robots: {
       index: true,
@@ -102,7 +105,8 @@ export default async function PhotoLayout({
 }) {
   const { id } = await params;
   const image = imagesData.find((img) => img.id === id);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yoursite.com";
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://ios-wallpapers.app/";
 
   if (!image) {
     return <>{children}</>;
@@ -120,7 +124,8 @@ export default async function PhotoLayout({
     encodingFormat: "image/webp",
     width: "1200",
     height: "1800",
-    keywords: "iPhone wallpaper, iOS 26, lock screen, home screen, HD wallpaper, iPhone background",
+    keywords:
+      "iPhone wallpaper, iOS 26, lock screen, home screen, HD wallpaper, iPhone background",
     creator: {
       "@type": "Organization",
       name: "iPhone Wallpapers iOS 26",

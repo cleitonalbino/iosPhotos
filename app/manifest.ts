@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: "iPhone Wallpapers",
     description:
       "Browse and download stunning HD iPhone wallpapers optimized for iOS 26. Perfect lock screen and home screen backgrounds for all iPhone models.",
-    start_url: "/",
+    start_url: "https://ios-wallpapers.app/",
     display: "standalone",
     display_override: ["window-controls-overlay", "standalone"],
     background_color: "#000000",

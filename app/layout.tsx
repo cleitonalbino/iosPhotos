@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://yoursite.com"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://ios-wallpapers.app/"
   ),
   title: {
     default:
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "/",
+    url: "https://ios-wallpapers.app/",
     siteName: "iPhone Wallpapers iOS 26",
     title:
       "iPhone Wallpapers iOS 26 - Free HD Backgrounds & Lock Screen Images",
