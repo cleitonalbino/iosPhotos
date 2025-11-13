@@ -255,9 +255,26 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                 </div>
 
                 {/* Desktop: iPhone frame with image inside */}
-                <div className="hidden md:flex w-full h-full items-center justify-center lg:gap-12 gap-6 bg-gradient-to-br from-gray-900 via-black to-gray-900 lg:px-8 px-4 py-8">
+                <div className="hidden md:flex w-full h-full items-center justify-center lg:gap-12 gap-6 relative overflow-hidden lg:px-8 px-4 py-8">
+                  {/* Blurred background image */}
+                  <div className="absolute inset-0 z-0">
+                    <Image
+                      src={slide.data.thumb}
+                      alt=""
+                      fill
+                      className="object-cover"
+                      quality={60}
+                      priority={slideIndex === 0}
+                      style={{
+                        filter: 'blur(60px) brightness(0.4)',
+                        transform: 'scale(1.1)'
+                      }}
+                    />
+                    {/* Dark overlay for better contrast */}
+                    <div className="absolute inset-0 bg-black/60"></div>
+                  </div>
                   {/* Wallpaper info - Left side - Hide on medium screens, show on large */}
-                  <div className="hidden lg:flex flex-col gap-6 max-w-md flex-shrink-0">
+                  <div className="hidden lg:flex flex-col gap-6 max-w-md flex-shrink-0 relative z-10">
                     <div>
                       <h1 className="text-4xl font-bold text-white mb-3">
                         iPhone Wallpaper
@@ -268,7 +285,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                     </div>
 
                     <div className="space-y-4">
-                      <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                      <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-2xl">
                         <h3 className="text-white font-semibold mb-3 text-sm uppercase tracking-wider">
                           Compatible Devices
                         </h3>
@@ -281,7 +298,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                         </div>
                       </div>
 
-                      <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                      <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-2xl">
                         <h3 className="text-white font-semibold mb-3 text-sm uppercase tracking-wider">
                           Features
                         </h3>
@@ -321,7 +338,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                             console.log("Error sharing:", err);
                           }
                         }}
-                        className="flex-1 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-6 py-3 rounded-full shadow-lg transition-all duration-200 border border-white/20 flex items-center justify-center gap-2"
+                        className="flex-1 bg-white/10 hover:bg-white/20 backdrop-blur-xl text-white px-6 py-3 rounded-full shadow-2xl transition-all duration-200 border border-white/30 flex items-center justify-center gap-2"
                         aria-label="Share wallpaper"
                       >
                         <svg
@@ -359,7 +376,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                         href={slide.data.img}
                         download
                         rel="noopener noreferrer"
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg transition-all duration-200 border border-blue-500 flex items-center justify-center gap-2"
+                        className="flex-1 bg-blue-600/90 hover:bg-blue-600 backdrop-blur-xl text-white px-6 py-3 rounded-full shadow-2xl transition-all duration-200 border border-blue-400/50 flex items-center justify-center gap-2"
                         aria-label="Download wallpaper"
                       >
                         <svg
@@ -383,7 +400,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                   </div>
 
                   {/* iPhone Frame Container - Responsive */}
-                  <div className="relative flex items-center justify-center h-full">
+                  <div className="relative flex items-center justify-center h-full z-10">
                     {/* iPhone Frame */}
                     <div
                       className="relative iphone-frame w-auto"
@@ -489,7 +506,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                     {/* Desktop navigation arrows */}
                     <button
                       onClick={() => swiperRef.current?.slidePrev()}
-                      className="absolute lg:-left-16 -left-12 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white lg:p-4 p-3 rounded-full shadow-lg transition-all duration-200 border border-white/20"
+                      className="absolute lg:-left-16 -left-12 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-xl text-white lg:p-4 p-3 rounded-full shadow-2xl transition-all duration-200 border border-white/30"
                       aria-label="Previous wallpaper"
                     >
                       <svg
@@ -509,7 +526,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
 
                     <button
                       onClick={() => swiperRef.current?.slideNext()}
-                      className="absolute lg:-left-16 -left-12 top-1/2 lg:translate-y-12 translate-y-10 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white lg:p-4 p-3 rounded-full shadow-lg transition-all duration-200 border border-white/20"
+                      className="absolute lg:-left-16 -left-12 top-1/2 lg:translate-y-12 translate-y-10 bg-white/10 hover:bg-white/20 backdrop-blur-xl text-white lg:p-4 p-3 rounded-full shadow-2xl transition-all duration-200 border border-white/30"
                       aria-label="Next wallpaper"
                     >
                       <svg
