@@ -11,35 +11,40 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!image) {
     return {
-      title: "Photo Not Found | Photo Viewer",
-      description: "The requested photo could not be found.",
+      title: "Wallpaper Not Found | iPhone Wallpapers iOS 26",
+      description: "The requested iPhone wallpaper could not be found.",
     };
   }
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yoursite.com";
   const pageUrl = `${siteUrl}/${id}`;
   const imageUrl = image.img;
-  const title = `Photo ${id} | Photo Viewer`;
-  const description = `View and download high-quality photo ${id} from our curated collection. Explore stunning photography with infinite scroll.`;
+  const title = `HD iPhone Wallpaper ${id.substring(0, 8)} - Free Download iOS 26`;
+  const description = `Download stunning HD iPhone wallpaper optimized for iOS 26. Perfect for iPhone lock screen and home screen. Free high-quality background for iPhone 15, 16 Pro Max and all iOS devices.`;
 
   return {
     title,
     description,
     keywords: [
-      "photography",
-      "photos",
-      "images",
-      "high quality photos",
-      "free photos",
-      "photo gallery",
-      "photo viewer",
-      `photo ${id}`,
-      "vertical scroll gallery",
-      "image collection",
+      "iPhone wallpaper",
+      "iOS 26 wallpaper",
+      "iPhone background",
+      "lock screen wallpaper",
+      "home screen wallpaper",
+      "iPhone 16 wallpaper",
+      "iPhone 15 Pro wallpaper",
+      "HD iPhone wallpaper",
+      "4K wallpaper",
+      "free wallpaper download",
+      "iOS background",
+      "aesthetic wallpaper",
+      `wallpaper ${id.substring(0, 8)}`,
+      "mobile wallpaper",
+      "iPhone homescreen background",
     ],
-    authors: [{ name: "Photo Viewer" }],
-    creator: "Photo Viewer",
-    publisher: "Photo Viewer",
+    authors: [{ name: "iPhone Wallpapers iOS 26" }],
+    creator: "iPhone Wallpapers iOS 26",
+    publisher: "iPhone Wallpapers iOS 26",
     metadataBase: new URL(siteUrl),
     alternates: {
       canonical: pageUrl,
@@ -50,14 +55,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: pageUrl,
       title,
       description,
-      siteName: "Photo Viewer",
+      siteName: "iPhone Wallpapers iOS 26",
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 1800,
-          alt: `High-quality photo ${id}`,
-          type: "image/jpeg",
+          alt: `HD iPhone wallpaper for iOS 26 - ${id.substring(0, 8)}`,
+          type: "image/webp",
         },
       ],
     },
@@ -110,18 +115,19 @@ export default async function PhotoLayout({
     contentUrl: image.img,
     thumbnailUrl: image.thumb,
     url: `${siteUrl}/${id}`,
-    name: `Photo ${id}`,
-    description: `High-quality photo ${id} from our curated collection`,
-    encodingFormat: "image/jpeg",
+    name: `HD iPhone Wallpaper ${id.substring(0, 8)} - iOS 26`,
+    description: `Download stunning HD iPhone wallpaper optimized for iOS 26. Perfect for iPhone lock screen and home screen backgrounds.`,
+    encodingFormat: "image/webp",
     width: "1200",
     height: "1800",
+    keywords: "iPhone wallpaper, iOS 26, lock screen, home screen, HD wallpaper, iPhone background",
     creator: {
       "@type": "Organization",
-      name: "Photo Viewer",
+      name: "iPhone Wallpapers iOS 26",
     },
     publisher: {
       "@type": "Organization",
-      name: "Photo Viewer",
+      name: "iPhone Wallpapers iOS 26",
       logo: {
         "@type": "ImageObject",
         url: `${siteUrl}/logo.png`, // Add your logo
@@ -131,21 +137,21 @@ export default async function PhotoLayout({
       "@type": "WebPage",
       "@id": `${siteUrl}/${id}`,
       url: `${siteUrl}/${id}`,
-      name: `Photo ${id} | Photo Viewer`,
-      description: `View and download high-quality photo ${id}`,
+      name: `HD iPhone Wallpaper ${id.substring(0, 8)} - Free Download iOS 26`,
+      description: `Download stunning HD iPhone wallpaper optimized for iOS 26. Perfect for lock screen and home screen.`,
       breadcrumb: {
         "@type": "BreadcrumbList",
         itemListElement: [
           {
             "@type": "ListItem",
             position: 1,
-            name: "Home",
+            name: "iPhone Wallpapers",
             item: siteUrl,
           },
           {
             "@type": "ListItem",
             position: 2,
-            name: `Photo ${id}`,
+            name: `Wallpaper ${id.substring(0, 8)}`,
             item: `${siteUrl}/${id}`,
           },
         ],

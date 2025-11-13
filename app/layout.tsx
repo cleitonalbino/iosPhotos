@@ -21,26 +21,31 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "https://yoursite.com"
   ),
   title: {
-    default: "Photo Viewer - Explore Stunning High-Quality Photography",
-    template: "%s | Photo Viewer",
+    default: "iPhone Wallpapers iOS 26 - Free HD Backgrounds & Lock Screen Images",
+    template: "%s | iPhone Wallpapers iOS 26",
   },
   description:
-    "Discover and download stunning high-quality photos from our curated collection. Browse through beautiful photography with infinite scroll and enjoy a seamless viewing experience.",
+    "Discover stunning iPhone wallpapers optimized for iOS 26. Browse and download free HD backgrounds, lock screen images, and home screen wallpapers. Perfect quality for iPhone 15, 16 Pro Max and all iOS devices.",
   keywords: [
-    "photography",
-    "photos",
-    "high quality images",
-    "photo gallery",
-    "free photos",
-    "image viewer",
-    "photo collection",
-    "stunning photography",
-    "download photos",
-    "curated photos",
+    "iPhone wallpapers",
+    "iOS 26 wallpapers",
+    "iPhone backgrounds",
+    "lock screen wallpapers",
+    "home screen wallpapers",
+    "iPhone 16 wallpapers",
+    "iPhone 15 Pro Max wallpapers",
+    "HD iPhone wallpapers",
+    "4K iPhone backgrounds",
+    "free iPhone wallpapers",
+    "iOS backgrounds",
+    "iPhone lock screen",
+    "aesthetic wallpapers",
+    "iPhone homescreen",
+    "wallpaper download",
   ],
-  authors: [{ name: "Photo Viewer" }],
-  creator: "Photo Viewer",
-  publisher: "Photo Viewer",
+  authors: [{ name: "iPhone Wallpapers iOS 26" }],
+  creator: "iPhone Wallpapers iOS 26",
+  publisher: "iPhone Wallpapers iOS 26",
   formatDetection: {
     email: false,
     address: false,
@@ -50,24 +55,24 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "/",
-    siteName: "Photo Viewer",
-    title: "Photo Viewer - Explore Stunning High-Quality Photography",
+    siteName: "iPhone Wallpapers iOS 26",
+    title: "iPhone Wallpapers iOS 26 - Free HD Backgrounds & Lock Screen Images",
     description:
-      "Discover and download stunning high-quality photos from our curated collection. Browse through beautiful photography with infinite scroll.",
+      "Discover stunning iPhone wallpapers optimized for iOS 26. Browse and download free HD backgrounds, lock screen images, and home screen wallpapers for all iPhone models.",
     images: [
       {
         url: "/og-image.jpg", // Add your Open Graph image
         width: 1200,
         height: 630,
-        alt: "Photo Viewer - Stunning Photography Collection",
+        alt: "iPhone Wallpapers iOS 26 - HD Backgrounds Collection",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Photo Viewer - Explore Stunning High-Quality Photography",
+    title: "iPhone Wallpapers iOS 26 - Free HD Backgrounds",
     description:
-      "Discover and download stunning high-quality photos from our curated collection.",
+      "Discover stunning iPhone wallpapers optimized for iOS 26. Free HD backgrounds and lock screen images.",
     images: ["/og-image.jpg"], // Add your Twitter card image
     creator: "@yourhandle", // Replace with your Twitter handle
   },
@@ -88,7 +93,7 @@ export const metadata: Metadata = {
     // apple: "/apple-icon.png",
   },
   manifest: "/manifest.webmanifest",
-  category: "photography",
+  category: "lifestyle",
 };
 
 export const viewport: Viewport = {

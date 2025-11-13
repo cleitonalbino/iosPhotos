@@ -2,10 +2,10 @@ import { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Photo Viewer - Explore Stunning Photography",
-    short_name: "Photo Viewer",
+    name: "iPhone Wallpapers iOS 26 - HD Backgrounds & Lock Screen",
+    short_name: "iPhone Wallpapers",
     description:
-      "Browse and download high-quality photos with infinite scroll. Discover stunning photography from our curated collection.",
+      "Browse and download stunning HD iPhone wallpapers optimized for iOS 26. Perfect lock screen and home screen backgrounds for all iPhone models.",
     start_url: "/",
     display: "standalone",
     display_override: ["window-controls-overlay", "standalone"],
@@ -31,6 +31,6 @@ export default function manifest(): MetadataRoute.Manifest {
       //   type: "image/png",
       // },
     ],
-    categories: ["photography", "art", "lifestyle"],
+    categories: ["lifestyle", "personalization", "entertainment"],
   };
 }

@@ -237,7 +237,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
               <div className="relative w-full h-full bg-black">
                 <Image
                   src={slide.data.thumb}
-                  alt={`High-quality photo ${slide.data.id} - Browse and download stunning photography from our curated collection`}
+                  alt={`HD iPhone wallpaper ${slide.data.id.substring(0, 8)} - Free download for iOS 26 lock screen and home screen`}
                   fill
                   className="object-cover"
                   priority={slideIndex === 0}
@@ -257,8 +257,8 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                         process.env.NEXT_PUBLIC_SITE_URL ||
                         window.location.origin;
                       const shareData = {
-                        title: `Photo ${slide.data?.id} | Photo Viewer`,
-                        text: `Check out this amazing photo!`,
+                        title: `HD iPhone Wallpaper - iOS 26`,
+                        text: `Check out this stunning iPhone wallpaper for iOS 26! Perfect for lock screen and home screen.`,
                         url: `${siteUrl}/${slide.data?.id}`,
                       };
 
