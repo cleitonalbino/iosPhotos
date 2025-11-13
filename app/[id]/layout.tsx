@@ -89,7 +89,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     verification: {
       // Add your verification codes here when you have them
-      // google: "your-google-verification-code",
+      google:
+        "google-site-verification=vlxcskZtRrBdZg7KMXsIrNkwVrLdqlKMQFsjvCXihy8",
       // yandex: "your-yandex-verification-code",
       // bing: "your-bing-verification-code",
     },
