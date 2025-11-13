@@ -266,8 +266,8 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                       quality={60}
                       priority={slideIndex === 0}
                       style={{
-                        filter: 'blur(60px) brightness(0.4)',
-                        transform: 'scale(1.1)'
+                        filter: "blur(20px) brightness(0.5)",
+                        transform: "scale(1.1)",
                       }}
                     />
                     {/* Dark overlay for better contrast */}
@@ -289,7 +289,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                         <h3 className="text-white font-semibold mb-3 text-sm uppercase tracking-wider">
                           Compatible Devices
                         </h3>
-                        <div className="space-y-2 text-gray-300 text-sm">
+                        <div className="space-y-2 text-gray-300 text-xs">
                           <div>• iPhone 16 Pro Max</div>
                           <div>• iPhone 16 Pro</div>
                           <div>• iPhone 15 Pro Max</div>
@@ -302,7 +302,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                         <h3 className="text-white font-semibold mb-3 text-sm uppercase tracking-wider">
                           Features
                         </h3>
-                        <div className="space-y-2 text-gray-300 text-sm">
+                        <div className="space-y-2 text-gray-300 text-xs">
                           <div>✓ High Quality HD/4K</div>
                           <div>✓ Lock Screen Ready</div>
                           <div>✓ Home Screen Ready</div>
@@ -338,7 +338,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                             console.log("Error sharing:", err);
                           }
                         }}
-                        className="flex-1 bg-white/10 hover:bg-white/20 backdrop-blur-xl text-white px-6 py-3 rounded-full shadow-2xl transition-all duration-200 border border-white/30 flex items-center justify-center gap-2"
+                        className="flex-1 bg-white/10 hover:bg-white/25 hover:scale-105 backdrop-blur-2xl text-white px-6 py-3 rounded-full shadow-2xl transition-all duration-300 border border-white/30 hover:border-white/50 flex items-center justify-center gap-2"
                         aria-label="Share wallpaper"
                       >
                         <svg
@@ -376,7 +376,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                         href={slide.data.img}
                         download
                         rel="noopener noreferrer"
-                        className="flex-1 bg-blue-600/90 hover:bg-blue-600 backdrop-blur-xl text-white px-6 py-3 rounded-full shadow-2xl transition-all duration-200 border border-blue-400/50 flex items-center justify-center gap-2"
+                        className="bg-white/10 hover:bg-white/25 hover:scale-105 backdrop-blur-2xl text-white px-6 py-3 rounded-full shadow-2xl transition-all duration-300 border border-white/30 hover:border-white/50 flex items-center justify-center gap-2"
                         aria-label="Download wallpaper"
                       >
                         <svg
@@ -506,7 +506,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                     {/* Desktop navigation arrows */}
                     <button
                       onClick={() => swiperRef.current?.slidePrev()}
-                      className="absolute lg:-left-16 -left-12 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-xl text-white lg:p-4 p-3 rounded-full shadow-2xl transition-all duration-200 border border-white/30"
+                      className="absolute lg:-left-16 -left-12 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/25 hover:scale-110 backdrop-blur-2xl text-white lg:p-4 p-3 rounded-full shadow-2xl transition-all duration-300 border border-white/30 hover:border-white/50"
                       aria-label="Previous wallpaper"
                     >
                       <svg
@@ -526,7 +526,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
 
                     <button
                       onClick={() => swiperRef.current?.slideNext()}
-                      className="absolute lg:-left-16 -left-12 top-1/2 lg:translate-y-12 translate-y-10 bg-white/10 hover:bg-white/20 backdrop-blur-xl text-white lg:p-4 p-3 rounded-full shadow-2xl transition-all duration-200 border border-white/30"
+                      className="absolute lg:-left-16 -left-12 top-1/2 lg:translate-y-12 translate-y-10 bg-white/10 hover:bg-white/25 hover:scale-110 backdrop-blur-2xl text-white lg:p-4 p-3 rounded-full shadow-2xl transition-all duration-300 border border-white/30 hover:border-white/50"
                       aria-label="Next wallpaper"
                     >
                       <svg
@@ -622,7 +622,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
 
                 {/* Indicador de swipe - apenas na primeira imagem */}
                 {slideIndex === 0 && (
-                  <div className="absolute bottom-[120px] left-1/2 transform -translate-x-1/2 animate-bounce">
+                  <div className="absolute bottom-[120px] lg:hidden left-1/2 transform -translate-x-1/2 animate-bounce">
                     <div className="flex flex-col items-center gap-1 bg-black/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
                       <p className="text-xs text-white/90 font-medium">
                         Swipe or scroll
