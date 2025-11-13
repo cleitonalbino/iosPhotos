@@ -5,8 +5,6 @@ import {
   useState,
   useRef,
   useCallback,
-  lazy,
-  Suspense,
 } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -32,9 +30,7 @@ function useCurrentDateTime() {
 import "swiper/css";
 
 import imagesData from "../../data/images.json";
-
-// Lazy load do componente de anúncio para melhor performance
-const AdSenseAd = lazy(() => import("../components/AdSenseAd"));
+import AdSenseAd from "../components/AdSenseAd";
 
 interface ImageData {
   id: string;
@@ -194,6 +190,26 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
       }
     },
     [slides, images.length, loadMoreImages, adTimersCompleted]
+  );
+
+  // Memoized callback for ad timer completion
+  const handleAdTimerComplete = useCallback(
+    (adIndex: number) => () => {
+      setAdTimersCompleted((prev) => {
+        const newSet = new Set(prev);
+        newSet.add(adIndex);
+        return newSet;
+      });
+
+      // Reabilitar swiper
+      if (swiperRef.current) {
+        swiperRef.current.enable();
+        swiperRef.current.allowTouchMove = true;
+        swiperRef.current.allowSlideNext = true;
+        swiperRef.current.allowSlidePrev = true;
+      }
+    },
+    []
   );
 
   // Preload das próximas imagens
@@ -726,34 +742,12 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
         } else if (slide.type === "ad" && slide.adIndex !== undefined) {
           // Renderizar slide de anúncio
           return (
-            <SwiperSlide key={`ad-${slide.adIndex}-${slideIndex}`}>
+            <SwiperSlide key={`ad-${slide.adIndex}`}>
               <div className="relative w-full h-full bg-black">
-                <Suspense
-                  fallback={
-                    <div className="w-full h-full bg-black flex items-center justify-center">
-                      <div className="text-white/50">Loading ad...</div>
-                    </div>
-                  }
-                >
-                  <AdSenseAd
-                    adSlot={`ad-${slide.adIndex}`}
-                    onTimerComplete={() => {
-                      setAdTimersCompleted((prev) => {
-                        const newSet = new Set(prev);
-                        newSet.add(slide.adIndex!);
-                        return newSet;
-                      });
-
-                      // Reabilitar swiper
-                      if (swiperRef.current) {
-                        swiperRef.current.enable();
-                        swiperRef.current.allowTouchMove = true;
-                        swiperRef.current.allowSlideNext = true;
-                        swiperRef.current.allowSlidePrev = true;
-                      }
-                    }}
-                  />
-                </Suspense>
+                <AdSenseAd
+                  adSlot={`ad-${slide.adIndex}`}
+                  onTimerComplete={handleAdTimerComplete(slide.adIndex)}
+                />
               </div>
             </SwiperSlide>
           );

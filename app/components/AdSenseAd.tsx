@@ -12,9 +12,15 @@ export default function AdSenseAd({ adSlot, onTimerComplete }: AdSenseAdProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isAdPushed = useRef(false);
   const timerStarted = useRef(false);
+  const onTimerCompleteRef = useRef(onTimerComplete);
   const [progress, setProgress] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+
+  // Manter a ref atualizada
+  useEffect(() => {
+    onTimerCompleteRef.current = onTimerComplete;
+  }, [onTimerComplete]);
 
   // Detectar quando o anúncio entra na viewport
   useEffect(() => {
@@ -67,12 +73,12 @@ export default function AdSenseAd({ adSlot, onTimerComplete }: AdSenseAdProps) {
       if (currentStep >= steps) {
         clearInterval(timer);
         setIsComplete(true);
-        onTimerComplete?.();
+        onTimerCompleteRef.current?.();
       }
     }, interval);
 
     return () => clearInterval(timer);
-  }, [isVisible, onTimerComplete]);
+  }, [isVisible]);
 
   return (
     <div
