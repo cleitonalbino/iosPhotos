@@ -78,3 +78,15 @@ body {
 .swiper-wrapper {
   touch-action: pan-y;
 }
+
+/* iPhone frame glow effect */
+@media (min-width: 768px) {
+  .iphone-frame {
+    filter: drop-shadow(0 0 60px rgba(255, 255, 255, 0.1));
+  }
+
+  .iphone-frame:hover {
+    filter: drop-shadow(0 0 80px rgba(255, 255, 255, 0.15));
+    transition: filter 0.3s ease;
+  }
+}
