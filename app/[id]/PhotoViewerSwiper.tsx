@@ -13,6 +13,21 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Keyboard, Mousewheel } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 
+// Hook para obter data e hora atual
+function useCurrentDateTime() {
+  const [dateTime, setDateTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setDateTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return dateTime;
+}
+
 // Import Swiper styles
 import "swiper/css";
 
@@ -46,6 +61,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
   );
   const swiperRef = useRef<SwiperType | null>(null);
   const initializedRef = useRef(false);
+  const currentDateTime = useCurrentDateTime();
 
   // Pool de imagens embaralhadas e índice atual
   const shuffledPoolRef = useRef<ImageData[]>([]);
@@ -252,6 +268,37 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                     placeholder="blur"
                     blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8A/9k="
                   />
+
+                  {/* iOS 26 Lock Screen Time & Date */}
+                  <div className="absolute top-[100px] left-0 right-0 flex flex-col items-center z-20 pointer-events-none">
+                    <div
+                      className="text-white/90 text-lg font-semibold mb-1"
+                      style={{
+                        textShadow: "0 1px 5px rgba(0, 0, 0, 0.5)",
+                      }}
+                    >
+                      {currentDateTime.toLocaleDateString("en-US", {
+                        weekday: "short",
+                        day: "numeric",
+                        month: "short",
+                      })}
+                    </div>
+                    <div
+                      className="text-white font-light tracking-tight"
+                      style={{
+                        fontSize: "150px",
+                        lineHeight: "1",
+                        textShadow:
+                          "0 2px 10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.3)",
+                      }}
+                    >
+                      {currentDateTime.toLocaleTimeString("en-US", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: false,
+                      })}
+                    </div>
+                  </div>
                 </div>
 
                 {/* Desktop: iPhone frame with image inside */}
@@ -457,6 +504,35 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
                             placeholder="blur"
                             blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8A/9k="
                           />
+
+                          {/* iOS 26 Lock Screen Time & Date - Desktop Frame */}
+                          <div className="absolute top-[60px] left-0 right-0 flex flex-col items-center z-20 pointer-events-none">
+                            <div
+                              className="text-white/90 text-xs font-semibold mb-0.5"
+                              style={{
+                                textShadow: "0 1px 5px rgba(0, 0, 0, 0.5)",
+                              }}
+                            >
+                              {currentDateTime.toLocaleDateString("en-US", {
+                                weekday: "short",
+                                day: "numeric",
+                                month: "short",
+                              })}
+                            </div>
+                            <div
+                              className="text-white font-light tracking-tight text-[72px] leading-none"
+                              style={{
+                                textShadow:
+                                  "0 2px 10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.3)",
+                              }}
+                            >
+                              {currentDateTime.toLocaleTimeString("en-US", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: false,
+                              })}
+                            </div>
+                          </div>
                         </div>
                       </div>
 
