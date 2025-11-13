@@ -21,7 +21,8 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "https://yoursite.com"
   ),
   title: {
-    default: "iPhone Wallpapers iOS 26 - Free HD Backgrounds & Lock Screen Images",
+    default:
+      "iPhone Wallpapers iOS 26 - Free HD Backgrounds & Lock Screen Images",
     template: "%s | iPhone Wallpapers iOS 26",
   },
   description:
@@ -56,7 +57,8 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "/",
     siteName: "iPhone Wallpapers iOS 26",
-    title: "iPhone Wallpapers iOS 26 - Free HD Backgrounds & Lock Screen Images",
+    title:
+      "iPhone Wallpapers iOS 26 - Free HD Backgrounds & Lock Screen Images",
     description:
       "Discover stunning iPhone wallpapers optimized for iOS 26. Browse and download free HD backgrounds, lock screen images, and home screen wallpapers for all iPhone models.",
     images: [
@@ -116,7 +118,7 @@ export default function RootLayout({
         {/* Google AdSense Script */}
         <script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXXX"
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_CA_PUB_KEY}`}
           crossOrigin="anonymous"
         ></script>
       </head>

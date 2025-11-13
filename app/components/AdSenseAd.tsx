@@ -88,7 +88,7 @@ export default function AdSenseAd({ adSlot, onTimerComplete }: AdSenseAdProps) {
         <ins
           className="adsbygoogle"
           style={{ display: "block", width: "100%", height: "100%" }}
-          data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX" // Substitua pelo seu ID
+          data-ad-client={process.env.NEXT_PUBLIC_CA_PUB_KEY} // Substitua pelo seu ID
           data-ad-slot={adSlot}
           data-ad-format="auto"
           data-full-width-responsive="true"
