@@ -5,10 +5,7 @@ import {
   useState,
   useRef,
   useCallback,
-  useMemo,
-  memo,
 } from "react";
-import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Keyboard, Mousewheel, Virtual } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
@@ -18,7 +15,6 @@ import "swiper/css";
 import "swiper/css/virtual";
 
 import imagesData from "../../data/images.json";
-import AdSenseAd from "../components/AdSenseAd";
 import ImageSlide from "./ImageSlide";
 
 interface ImageData {
@@ -31,19 +27,8 @@ interface PhotoViewerProps {
   initialImage: ImageData;
 }
 
-interface SlideItem {
-  type: "image" | "ad";
-  data?: ImageData;
-  adIndex?: number;
-  originalIndex: number;
-}
-
 export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
   const [images, setImages] = useState<ImageData[]>([]);
-  const [slides, setSlides] = useState<SlideItem[]>([]);
-  const [adTimersCompleted, setAdTimersCompleted] = useState<Set<number>>(
-    new Set()
-  );
   const swiperRef = useRef<SwiperType | null>(null);
   const initializedRef = useRef(false);
 
@@ -108,101 +93,23 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
     ]);
   }, [getNextImage]);
 
-  // Criar array de slides mesclando imagens e anúncios (memoizado)
-  const memoizedSlides = useMemo(() => {
-    if (images.length === 0) return [];
-
-    const newSlides: SlideItem[] = [];
-    let adCounter = 0;
-
-    images.forEach((image, index) => {
-      // Adicionar imagem
-      newSlides.push({
-        type: "image",
-        data: image,
-        originalIndex: index,
-      });
-
-      // Adicionar anúncio a cada 5 imagens (após a 5ª, 10ª, 15ª, etc.)
-      if ((index + 1) % 5 === 0 && index > 0) {
-        newSlides.push({
-          type: "ad",
-          adIndex: adCounter++,
-          originalIndex: index,
-        });
-      }
-    });
-
-    return newSlides;
-  }, [images]);
-
-  // Atualizar slides quando memoizedSlides mudar
-  useEffect(() => {
-    setSlides(memoizedSlides);
-  }, [memoizedSlides]);
-
   // Handle slide change
   const handleSlideChange = useCallback(
     (swiper: SwiperType) => {
       const slideIndex = swiper.activeIndex;
-      const currentSlide = slides[slideIndex];
+      const currentImage = images[slideIndex];
 
-      if (!currentSlide) return;
+      if (!currentImage) return;
 
-      // Se for imagem, atualizar URL
-      if (currentSlide.type === "image" && currentSlide.data) {
-        window.history.replaceState(null, "", `/${currentSlide.data.id}`);
+      // Atualizar URL
+      window.history.replaceState(null, "", `/${currentImage.id}`);
 
-        // Carregar mais imagens quando próximo do fim
-        if (currentSlide.originalIndex >= images.length - 2) {
-          loadMoreImages();
-        }
-      }
-
-      // Se for anúncio, verificar se o timer foi completado
-      if (currentSlide.type === "ad" && currentSlide.adIndex !== undefined) {
-        const timerCompleted = adTimersCompleted.has(currentSlide.adIndex);
-
-        if (!timerCompleted) {
-          swiper.disable();
-          swiper.allowTouchMove = false;
-          swiper.allowSlideNext = false;
-          swiper.allowSlidePrev = false;
-        } else {
-          swiper.enable();
-          swiper.allowTouchMove = true;
-          swiper.allowSlideNext = true;
-          swiper.allowSlidePrev = true;
-        }
-      } else {
-        // Se for imagem, sempre desbloquear
-        swiper.enable();
-        swiper.allowTouchMove = true;
-        swiper.allowSlideNext = true;
-        swiper.allowSlidePrev = true;
+      // Carregar mais imagens quando próximo do fim
+      if (slideIndex >= images.length - 2) {
+        loadMoreImages();
       }
     },
-    [slides, images.length, loadMoreImages, adTimersCompleted]
-  );
-
-  // Memoized callback for ad timer completion
-  const handleAdTimerComplete = useCallback(
-    (adIndex: number) => () => {
-      setAdTimersCompleted((prev) => {
-        const newSet = new Set(prev);
-        newSet.add(adIndex);
-        return newSet;
-      });
-
-      // Reabilitar swiper
-      if (swiperRef.current) {
-        swiperRef.current.enable();
-        swiperRef.current.allowTouchMove = true;
-        swiperRef.current.allowSlideNext = true;
-        swiperRef.current.allowSlidePrev = true;
-      }
-    },
-    []
+    [images, loadMoreImages]
   );
 
   // Preload das próximas imagens
@@ -219,7 +126,7 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
     });
   }, [images]);
 
-  if (images.length === 0 || slides.length === 0) {
+  if (images.length === 0) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-white text-xl">Loading...</div>
@@ -262,33 +169,15 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
       className="w-full h-screen"
       style={{ width: "100%", height: "100vh" }}
     >
-      {slides.map((slide, slideIndex) => {
-        if (slide.type === "image" && slide.data) {
-          // Renderizar slide de imagem usando componente memoizado
-          return (
-            <SwiperSlide key={`image-${slide.data.id}-${slideIndex}`}>
-              <ImageSlide
-                imageData={slide.data}
-                slideIndex={slideIndex}
-                swiperRef={swiperRef}
-              />
-            </SwiperSlide>
-          );
-        } else if (slide.type === "ad" && slide.adIndex !== undefined) {
-          // Renderizar slide de anúncio
-          return (
-            <SwiperSlide key={`ad-${slide.adIndex}`}>
-              <div className="relative w-full h-full bg-black">
-                <AdSenseAd
-                  adSlot={`ad-${slide.adIndex}`}
-                  onTimerComplete={handleAdTimerComplete(slide.adIndex)}
-                />
-              </div>
-            </SwiperSlide>
-          );
-        }
-        return null;
-      })}
+      {images.map((image, index) => (
+        <SwiperSlide key={`image-${image.id}-${index}`}>
+          <ImageSlide
+            imageData={image}
+            slideIndex={index}
+            swiperRef={swiperRef}
+          />
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 }
