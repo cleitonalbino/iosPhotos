@@ -79,6 +79,31 @@ body {
   touch-action: pan-y;
 }
 
+/* No swipe areas - allow scrolling */
+.no-swipe {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Custom scrollbar for no-swipe areas */
+.no-swipe::-webkit-scrollbar {
+  width: 6px;
+}
+
+.no-swipe::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.no-swipe::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.no-swipe::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
 /* iPhone frame glow effect */
 @media (min-width: 768px) {
   .iphone-frame {

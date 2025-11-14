@@ -333,8 +333,19 @@ export default function Home() {
             <div>
               © 2025 iPhone Wallpapers. All wallpapers are free to download and use.
             </div>
-            <div>
-              Optimized for iOS 26 • Compatible with all iPhone models
+            <div className="flex items-center gap-6">
+              <Link href="/about" className="hover:text-white transition-colors">
+                About
+              </Link>
+              <Link href="/terms" className="hover:text-white transition-colors">
+                Terms
+              </Link>
+              <a
+                href="mailto:contact@ios-wallpapers.app"
+                className="hover:text-white transition-colors"
+              >
+                Contact
+              </a>
             </div>
           </div>
         </div>

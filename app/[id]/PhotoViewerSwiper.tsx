@@ -252,6 +252,8 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
         addSlidesBefore: 1,
       }}
       watchSlidesProgress={true}
+      noSwipingClass="no-swipe"
+      noSwipingSelector=".no-swipe"
       modules={[Keyboard, Mousewheel, Virtual]}
       onSwiper={(swiper) => {
         swiperRef.current = swiper;
