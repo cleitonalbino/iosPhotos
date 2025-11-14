@@ -235,7 +235,7 @@ const ImageSlide = memo(function ImageSlide({
             <div
               className="absolute inset-0 bg-gradient-to-b from-gray-800 to-gray-900 shadow-2xl"
               style={{
-                borderRadius: "25px",
+                borderRadius: "35px",
                 borderWidth: "10px",
                 borderStyle: "solid",
                 borderColor: "#000",
@@ -261,7 +261,7 @@ const ImageSlide = memo(function ImageSlide({
               <div
                 className="relative w-full h-full overflow-hidden"
                 style={{
-                  borderRadius: "min(10px, 5%)",
+                  borderRadius: "min(20px, 15%)",
                 }}
               >
                 <Image
