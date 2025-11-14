@@ -70,37 +70,116 @@ const ImageSlide = memo(function ImageSlide({
           <div className="absolute inset-0 bg-black/60"></div>
         </div>
         {/* Wallpaper info - Left side - Hide on medium screens, show on large */}
-        <div className="hidden lg:flex flex-col gap-6 max-w-md flex-shrink-0 relative z-10">
+        <div className="hidden lg:flex flex-col gap-6 max-w-md flex-shrink-0 relative z-10 overflow-y-auto max-h-[calc(100vh-100px)] pr-4">
           <div>
             <h1 className="text-4xl font-bold text-white mb-3">
-              iPhone Wallpaper
+              Premium iPhone Wallpaper Collection
             </h1>
-            <p className="text-gray-400 text-lg">Optimized for iOS 26</p>
+            <p className="text-gray-300 text-base leading-relaxed">
+              Discover our handpicked collection of high-quality wallpapers,
+              professionally curated and optimized for iOS 26. Each wallpaper is
+              carefully selected to enhance your iPhone's aesthetic appeal while
+              maintaining perfect compatibility with all screen sizes and
+              resolutions.
+            </p>
+          </div>
+
+          {/* Editorial Content Section */}
+          <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-2xl">
+            <h2 className="text-white font-semibold mb-4 text-lg">
+              About This Wallpaper
+            </h2>
+            <p className="text-gray-300 text-sm leading-relaxed mb-4">
+              This stunning wallpaper has been meticulously optimized for iPhone
+              displays, ensuring vibrant colors and sharp details on both lock
+              screen and home screen. The composition perfectly balances visual
+              appeal with functionality, leaving ample space for your widgets
+              and app icons.
+            </p>
+            <p className="text-gray-300 text-sm leading-relaxed">
+              Whether you're looking to personalize your iPhone 16 Pro Max,
+              iPhone 15 Pro, or any other iPhone model, this wallpaper adapts
+              seamlessly to your device's unique dimensions and aspect ratio.
+            </p>
           </div>
 
           <div className="space-y-4">
             <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-2xl">
-              <h3 className="text-white font-semibold mb-3 text-sm uppercase tracking-wider">
+              <h3 className="text-white font-semibold mb-3 text-base">
+                How to Set as Wallpaper
+              </h3>
+              <ol className="space-y-3 text-gray-300 text-sm list-decimal list-inside">
+                <li className="leading-relaxed">
+                  Download the wallpaper by clicking the download button below
+                </li>
+                <li className="leading-relaxed">
+                  Open the Photos app on your iPhone and locate the downloaded
+                  image
+                </li>
+                <li className="leading-relaxed">
+                  Tap the share icon and select "Use as Wallpaper"
+                </li>
+                <li className="leading-relaxed">
+                  Adjust the position and choose between Lock Screen, Home
+                  Screen, or both
+                </li>
+                <li className="leading-relaxed">
+                  Tap "Set" to apply your new wallpaper
+                </li>
+              </ol>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-2xl">
+              <h3 className="text-white font-semibold mb-3 text-base">
                 Compatible Devices
               </h3>
-              <div className="space-y-2 text-gray-300 text-xs">
-                <div>• iPhone 16 Pro Max</div>
-                <div>• iPhone 16 Pro</div>
-                <div>• iPhone 15 Pro Max</div>
-                <div>• iPhone 15 Pro</div>
-                <div>• All iPhone models</div>
+              <p className="text-gray-300 text-sm mb-3 leading-relaxed">
+                This wallpaper is compatible with all iPhone models, including:
+              </p>
+              <div className="space-y-2 text-gray-300 text-sm">
+                <div>• iPhone 16 Pro Max (1320 x 2868 pixels)</div>
+                <div>• iPhone 16 Pro (1206 x 2622 pixels)</div>
+                <div>• iPhone 15 Pro Max & 15 Pro</div>
+                <div>• iPhone 14 series</div>
+                <div>• iPhone 13 and earlier models</div>
               </div>
             </div>
 
             <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-2xl">
-              <h3 className="text-white font-semibold mb-3 text-sm uppercase tracking-wider">
-                Features
+              <h3 className="text-white font-semibold mb-3 text-base">
+                Quality & Features
               </h3>
-              <div className="space-y-2 text-gray-300 text-xs">
-                <div>✓ High Quality HD/4K</div>
-                <div>✓ Lock Screen Ready</div>
-                <div>✓ Home Screen Ready</div>
-                <div>✓ Free Download</div>
+              <div className="space-y-3 text-gray-300 text-sm">
+                <div className="flex items-start gap-2">
+                  <span className="text-green-400 mt-0.5">✓</span>
+                  <span className="leading-relaxed">
+                    High-resolution 4K quality for crystal-clear display
+                  </span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-green-400 mt-0.5">✓</span>
+                  <span className="leading-relaxed">
+                    Optimized for both Lock Screen and Home Screen
+                  </span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-green-400 mt-0.5">✓</span>
+                  <span className="leading-relaxed">
+                    Perfect aspect ratio for all iPhone sizes
+                  </span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-green-400 mt-0.5">✓</span>
+                  <span className="leading-relaxed">
+                    Compressed for faster downloads without quality loss
+                  </span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-green-400 mt-0.5">✓</span>
+                  <span className="leading-relaxed">
+                    100% free to download and use
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -334,10 +413,60 @@ const ImageSlide = memo(function ImageSlide({
         </div>
       </div>
 
-      {/* Botões de ação - Mobile only */}
-      <div className="md:hidden absolute bottom-[120px] w-full px-4 flex items-center justify-between gap-3 z-20">
-        {/* Botão de compartilhar */}
-        <button
+      {/* Editorial Content - Mobile */}
+      <div className="md:hidden absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-black via-black/95 to-transparent pt-32 pb-32 px-6">
+        <div className="space-y-4 mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-white mb-2">
+              Premium iPhone Wallpaper
+            </h1>
+            <p className="text-gray-300 text-sm leading-relaxed">
+              High-quality wallpaper optimized for iOS 26. Perfect for lock
+              screen and home screen, compatible with all iPhone models.
+            </p>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-xl rounded-xl p-4 border border-white/20">
+            <h2 className="text-white font-semibold mb-2 text-sm">
+              Quick Setup Guide
+            </h2>
+            <ol className="space-y-2 text-gray-300 text-xs list-decimal list-inside">
+              <li>Download using the button below</li>
+              <li>Open Photos app on your iPhone</li>
+              <li>Tap share icon → "Use as Wallpaper"</li>
+              <li>Choose Lock Screen, Home Screen, or both</li>
+            </ol>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-xl rounded-xl p-4 border border-white/20">
+            <h3 className="text-white font-semibold mb-2 text-sm">
+              Key Features
+            </h3>
+            <div className="space-y-1.5 text-gray-300 text-xs">
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span>4K high resolution quality</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span>Works on all iPhone models</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span>Optimized for iOS 26</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span>100% free download</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Botões de ação - Mobile */}
+        <div className="flex items-center justify-between gap-3 mb-4">
+          {/* Botão de compartilhar */}
+          <button
           onClick={async () => {
             const siteUrl =
               process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
@@ -405,12 +534,13 @@ const ImageSlide = memo(function ImageSlide({
           </svg>
         </a>
       </div>
+    </div>
 
       {/* Indicador de swipe - apenas na primeira imagem */}
       {slideIndex === 0 && (
-        <div className="absolute bottom-[120px] lg:hidden left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="flex flex-col items-center gap-1 bg-black/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
-            <p className="text-xs text-white/90 font-medium">Swipe or scroll</p>
+        <div className="absolute top-1/2 lg:hidden left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-bounce pointer-events-none">
+          <div className="flex flex-col items-center gap-1 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
+            <p className="text-xs text-white/90 font-medium">Swipe to explore</p>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
