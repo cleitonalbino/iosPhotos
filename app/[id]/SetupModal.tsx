@@ -19,7 +19,7 @@ const SetupModal = memo(function SetupModal({
       onClick={onClose}
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-xl"></div>
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-xs"></div>
 
       {/* Modal */}
       <div
