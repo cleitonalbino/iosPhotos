@@ -472,9 +472,9 @@ const ImageSlide = memo(function ImageSlide({
         </div>
       </div>
 
-      {/* Indicador de swipe - apenas na primeira imagem */}
+      {/* Indicador de swipe - apenas na primeira imagem - Mobile only */}
       {slideIndex === 0 && (
-        <div className="absolute bottom-[100px] lg:hidden left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-bounce pointer-events-none">
+        <div className="md:hidden absolute bottom-[100px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-bounce pointer-events-none">
           <div className="flex flex-col items-center gap-1 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
             <p className="text-xs text-white/90 font-medium">
               Swipe to explore
