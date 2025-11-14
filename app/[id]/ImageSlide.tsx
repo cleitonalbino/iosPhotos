@@ -44,7 +44,7 @@ const ImageSlide = memo(function ImageSlide({
 
         {/* iOS 26 Lock Screen Time & Date */}
         <ClockDisplay
-          className="absolute top-[100px] left-0 right-0 flex flex-col items-center z-20 pointer-events-none"
+          className="absolute top-[70px] left-0 right-0 flex flex-col items-center z-20 pointer-events-none"
           dateClassName="text-white/90 text-lg font-semibold mb-1"
           timeClassName="text-white font-light tracking-tight"
         />
