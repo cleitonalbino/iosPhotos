@@ -102,7 +102,15 @@ export default function PhotoViewerSwiper({ initialImage }: PhotoViewerProps) {
       if (!currentImage) return;
 
       // Atualizar URL
-      window.history.replaceState(null, "", `/${currentImage.id}`);
+      const newPath = `/${currentImage.id}`;
+      window.history.replaceState(null, "", newPath);
+
+      // Enviar pageview para Google Analytics
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('config', process.env.NEXT_PUBLIC_GA_ID, {
+          page_path: newPath,
+        });
+      }
 
       // Carregar mais imagens quando próximo do fim
       if (slideIndex >= images.length - 2) {
